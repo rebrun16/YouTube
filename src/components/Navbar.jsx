@@ -2,8 +2,11 @@ import React from 'react'
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import styled from "styled-components";
 import SearchIcon from '@mui/icons-material/Search';
+import VideoCameraBackIcon from '@mui/icons-material/VideoCameraBack';
+import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
+import KeyboardIcon from '@mui/icons-material/Keyboard';
+import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
 import { Link } from "react-router-dom";
-
 const Container = styled.div`
   position: sticky;
   top: 0;
@@ -30,8 +33,19 @@ const Search = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 5px;
+  height: 30px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   border: 1px solid #ccc;
-  border-radius: 3px;
+  border-radius:25px;
+  color: ${({ theme }) => theme.text};
+`;
+const Searches = styled.div`
+padding:180px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+color: ${({ theme }) => theme.text};
 `;
 
 const Input = styled.input`
@@ -40,6 +54,13 @@ const Input = styled.input`
   outline: none;
   color: ${({ theme }) => theme.text};
 `;
+const Buttons = styled.div`
+  padding:20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${({ theme }) => theme.text};
+`
 
 const Button = styled.button`
   padding: 5px 15px;
@@ -58,9 +79,19 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Search>
-          <Input placeholder='Search'/>
+          <Input placeholder='Введите запрос'/>
           <SearchIcon/>
         </Search>
+        <Searches>
+            <KeyboardIcon/>
+            <KeyboardVoiceIcon/>
+        </Searches>
+        <Buttons>
+          <VideoCameraBackIcon/>
+        </Buttons>
+        <Buttons>
+          <NotificationsActiveIcon/>
+        </Buttons>
         <Link to="signin" style={{textDecoration:"none"}}>
           <Button>
                 <AccountCircleOutlinedIcon />

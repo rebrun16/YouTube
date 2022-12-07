@@ -90,11 +90,11 @@ const Menu = ({ darkMode, setDarkMode }) => {
               <Img src={YouTube} />
               YouTube
             </Logo>
+          <Item>
+            <HomeIcon />
+            Главная
+          </Item>
         </Link>
-        <Item>
-          <HomeIcon />
-          Главная
-        </Item>
         <Item>
           <ExploreOutlinedIcon />
           Shorts
