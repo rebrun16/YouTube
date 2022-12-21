@@ -1,12 +1,18 @@
-import React from 'react'
-import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import React, { useState } from "react";
 import styled from "styled-components";
-import SearchIcon from '@mui/icons-material/Search';
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Upload from "./Upload";
+
+import CloseIcon from '@mui/icons-material/Close';
 import VideoCameraBackIcon from '@mui/icons-material/VideoCameraBack';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import KeyboardIcon from '@mui/icons-material/Keyboard';
 import KeyboardVoiceIcon from '@mui/icons-material/KeyboardVoice';
-import { Link } from "react-router-dom";
+
 const Container = styled.div`
   position: sticky;
   top: 0;
@@ -37,15 +43,8 @@ const Search = styled.div`
   margin-top: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
-  border-radius:25px;
+  border-radius: 3px;
   color: ${({ theme }) => theme.text};
-`;
-const Searches = styled.div`
-padding:180px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-color: ${({ theme }) => theme.text};
 `;
 
 const Input = styled.input`
@@ -54,13 +53,6 @@ const Input = styled.input`
   outline: none;
   color: ${({ theme }) => theme.text};
 `;
-const Buttons = styled.div`
-  padding:20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  color: ${({ theme }) => theme.text};
-`
 
 const Button = styled.button`
   padding: 5px 15px;
@@ -73,34 +65,99 @@ const Button = styled.button`
   display: flex;
   align-items: center;
   gap: 5px;
+  cursor:pointer;
 `;
+
+const User = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  color: ${({ theme }) => theme.text};
+`;
+
+const Avatar = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #999;
+`;
+//
+const Searches = styled.div`
+padding:180px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+color: ${({ theme }) => theme.text};
+`;
+
+const Buttons = styled.div`
+  padding:20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: ${({ theme }) => theme.text}
+  `;
+const Div = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color:#828282;
+  border-radius: 50%;
+  color: white;
+  width:35px;
+  height:35px;
+`
+
 const Navbar = () => {
+  const navigate = useNavigate()
+  const [open, setOpen] = useState(false);
+  const [q, setQ] = useState("");
+  const { currentUser } = useSelector((state) => state.user);
   return (
-    <Container>
-      <Wrapper>
-        <Search>
-          <Input placeholder='Введите запрос'/>
-          <SearchIcon/>
-        </Search>
-        <Searches>
+    <>
+      <Container>
+        <Wrapper>
+          <Search>
+            <Input
+              placeholder="Введите запрос"
+              onChange={(e) => setQ(e.target.value)}
+            />
+              <SearchOutlinedIcon onClick={()=>navigate(`/search?q=${q}`)}/>
+          </Search>
+          <Searches>
             <KeyboardIcon/>
-            <KeyboardVoiceIcon/>
-        </Searches>
-        <Buttons>
-          <VideoCameraBackIcon/>
-        </Buttons>
-        <Buttons>
-          <NotificationsActiveIcon/>
-        </Buttons>
-        <Link to="signin" style={{textDecoration:"none"}}>
-          <Button>
+            <CloseIcon/>
+          </Searches>
+          
+          <Div>
+              <KeyboardVoiceIcon/>
+          </Div>
+          <Buttons>
+            <NotificationsActiveIcon/>
+          </Buttons>
+          <Buttons>
+            <VideoCameraBackIcon/>
+          </Buttons>
+          {currentUser ? (
+            <User>
+              <VideoCallOutlinedIcon onClick={() => setOpen(true)} />
+              <Avatar src={currentUser.img} />
+              {currentUser.name}
+            </User>
+          ) : (
+            <Link to="signin" style={{ textDecoration: "none" }}>
+              <Button>
                 <AccountCircleOutlinedIcon />
                 SIGN IN
-          </Button>
-        </Link>
-      </Wrapper>
-    </Container>
-  )
-}
+              </Button>
+            </Link>
+          )}
+        </Wrapper>
+      </Container>
+      {open && <Upload setOpen={setOpen} />}
+    </>
+  );
+};
 
-export default Navbar
+export default Navbar;
